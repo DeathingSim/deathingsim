@@ -10,8 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a78d2ef2381823e40bc7a695e42bb82d, type: 3}
-  m_Name: Dialog1
+  m_Name: Dialog2
   m_EditorClassIdentifier: 
-  character: {fileID: 0}
-  text: 
-  nextDialog: {fileID: 0}
+  onDisplay: {fileID: 0}
+  character: {fileID: 11400000, guid: d79278511dc109845939049896db604e, type: 2}
+  previewText: 
+  text: C'est Foxman !
+  isQuestion: 1
+  conditions: []
+  nextDialogNodes:
+  - {fileID: 11400000, guid: 959e8dac1a57f2140ada5ec2c57f4298, type: 2}
+  - {fileID: 11400000, guid: ac7a36fb117f47c42b1e168b4c3752c0, type: 2}

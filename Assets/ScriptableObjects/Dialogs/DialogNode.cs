@@ -9,7 +9,9 @@ public class DialogNode : ScriptableObject
     public Character character;
     public string previewText;
     public string text;
+    public bool isQuestion;
 
     public Condition[] conditions;
-    public DialogNode[] nextDialogNoides;
+
+    public DialogNode[] nextDialogNodes;
 }
