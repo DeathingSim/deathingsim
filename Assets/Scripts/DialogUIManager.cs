@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,18 +10,23 @@ public class DialogUIManager : MonoBehaviour
     public TextMeshProUGUI dialogBox;
     public GameObject panelDialog;
     public GameObject panelQuestion;
-    public Button[] buttons;
     public TextMeshProUGUI characterName;
-    public DialogNodeGameEvent gameEvent;
+    public IntGameEvent choiceGameEvent;
+    public GameObject buttonPrefab;
+    private List<Button> buttons;
+    public float buttonOffset;
 
     public void Awake()
     {
+        buttons = panelQuestion.GetComponentsInChildren<Button>().ToList();
     }
 
-    void OnButtonClick(DialogNode choiceSelected)
+    void OnButtonClick(Button button)
     {
-        if (gameEvent != null)
-            gameEvent.Raise(choiceSelected);
+        if (choiceGameEvent != null)
+            choiceGameEvent.Raise(buttons.IndexOf(button));
+
+        buttons.ForEach(x => x.onClick.RemoveAllListeners());
     }
 
     public void HideMessage()
@@ -29,26 +35,38 @@ public class DialogUIManager : MonoBehaviour
         dialogBox.text = string.Empty;
     }
 
-    public void ShowMessage(DialogNode dialogNode)
+    public void ShowQuestion(string[] choices)
     {
-        if (dialogNode.isQuestion)
+        panelQuestion.SetActive(true);
+        panelDialog.SetActive(false);
+
+        RectTransform r = panelQuestion.GetComponent<RectTransform>();
+        RectTransform br = buttonPrefab.GetComponent<RectTransform>();
+
+        buttons.ForEach(x => x.gameObject.SetActive(true));
+
+        for (int i = buttons.Count - 1; i >= 0; i--)
         {
-            panelQuestion.SetActive(true);
-            panelDialog.SetActive(false);
-            for (int i = 0; i < dialogNode.nextDialogNodes.Length; i++)
+            Button button = buttons[i];
+
+            if (i < choices.Length)
             {
-                DialogNode nextDialogNode = dialogNode.nextDialogNodes[i];
-                TextMeshProUGUI text = buttons[i].GetComponentInChildren<TextMeshProUGUI>();
-                text.text = nextDialogNode.previewText;
-                buttons[i].onClick.AddListener(delegate { OnButtonClick(nextDialogNode); });
+                button.gameObject.SetActive(true);
+                TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
+                text.text = choices[i];
+                button.onClick.AddListener(delegate { OnButtonClick(button); });
+            }
+            else
+            {
+                button.gameObject.SetActive(false);
             }
         }
-        else
-        {
-            panelQuestion.SetActive(false);
-            panelDialog.SetActive(true);
-            characterName.text = dialogNode.character?.characterName ?? string.Empty;
-            dialogBox.text = dialogNode.text;
-        }
+    }
+
+    public void ShowMessage(string message)
+    {
+        panelQuestion.SetActive(false);
+        panelDialog.SetActive(true);
+        dialogBox.text = message;
     }
 }

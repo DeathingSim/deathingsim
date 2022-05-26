@@ -1,58 +1,70 @@
+using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public DialogNode currentDialogNode;
-    public DialogNodeGameEvent showMessageGameEvent;
     public GameEvent endDialogGameEvent;
-    private bool canContinue;
-
-    private void Awake()
-    {
-    }
+    public StringGameEvent showDialogGameEvent;
+    public StringArrayGameEvent showQuestionGameEvent;
+    
+    public TextAsset textAsset;
+    private Story story;
+    private bool waitingForAnswer;
 
     private void Start()
     {
-        if (currentDialogNode != null)
+        Starte();
+    }
+
+    private void Starte()
+    {
+
+        story = new Story(textAsset.text);
+        ShowNextMessage();
+    }
+
+    public void ShowNextMessage()
+    {
+        if (story.canContinue)
         {
-            ShowMessage(currentDialogNode);
+            ShowMessage(story.Continue());
+            waitingForAnswer = false;
         }
-    }
-
-    private void ShowMessage(DialogNode dialogNode)
-    {
-        currentDialogNode = dialogNode;
-        canContinue = !dialogNode.isQuestion;
-        showMessageGameEvent.Raise(dialogNode);
-    }
-
-    public void OnChoiceClicked(DialogNode dialogNode)
-    {
-        ShowMessage(dialogNode);
-    }
-
-    void NextMessage()
-    {
-        // TO DO loop through all nextDialogNodes and evaluate each conditions
-        if (currentDialogNode != null && currentDialogNode.nextDialogNodes.Length > 0)
+        else if (story.currentChoices.Count > 0)
         {
-            ShowMessage(currentDialogNode.nextDialogNodes[0]);
+            ShowQuestion(story.currentChoices.Select(x => x.text).ToArray());
+            waitingForAnswer = true;
         }
         else
-        {
             endDialogGameEvent.Raise();
-        }
+    }
+
+    public void ShowMessage(string message)
+    {
+        showDialogGameEvent.Raise(message);
+    }
+
+    public void ShowQuestion(string[] choices)
+    {
+        showQuestionGameEvent.Raise(choices);
+    }
+
+    public void QuestionAnswered(int choice)
+    {
+        story.ChooseChoiceIndex(choice);
+        ShowNextMessage();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canContinue)
+        if (Input.GetMouseButtonDown(0) && !waitingForAnswer)
         {
-            NextMessage();
+            ShowNextMessage();
         }
     }
 }
