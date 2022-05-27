@@ -2,6 +2,7 @@ using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,12 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         story = new Story(textAsset.text);
+        List<string> hps = new List<string>() { "HP1", "HP2", "HP3", "HP4", "HP5" };
+        story.ObserveVariables(hps.ToList(), (variableName, newValue) =>
+        {
+
+
+        });
         ShowNextMessage();
     }
 
@@ -29,7 +36,15 @@ public class DialogueManager : MonoBehaviour
         if (story.canContinue)
         {
             string message = story.Continue();
-            string characterName = story.variablesState.GlobalVariableExistsWithName(CharacterNameVariable) ? (string)story.variablesState[CharacterNameVariable] : string.Empty;
+            string characterName = string.Empty;
+            Regex regex = new Regex(@"(^\S+):(.+)");
+            Match match = regex.Match(message);
+
+            if (match.Success)
+            {
+                characterName = match.Groups[1].Value;
+                message = match.Groups[2].Value;
+            }
 
             Dialog dialog = new Dialog()
             {
