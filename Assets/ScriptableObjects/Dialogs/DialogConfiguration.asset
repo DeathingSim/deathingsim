@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf075553a51aaf47804e9b348f895c1, type: 3}
   m_Name: DialogConfiguration
   m_EditorClassIdentifier: 
-  typeWriterEffectSpeed: 0.14
+  typeWriterEffectSpeed: 0.02
+  typeWriterEffectFastSpeed: 0.001

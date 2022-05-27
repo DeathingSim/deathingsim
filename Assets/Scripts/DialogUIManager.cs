@@ -26,10 +26,10 @@ public class DialogUIManager : MonoBehaviour
         buttons = panelQuestion.GetComponentsInChildren<Button>().ToList();
     }
 
-    void OnButtonClick(Button button)
+    void OnButtonClick(Button button, int nbChoices)
     {
         if (choiceGameEvent != null)
-            choiceGameEvent.Raise(buttons.IndexOf(button));
+            choiceGameEvent.Raise(buttons.IndexOf(button) - (buttons.Count - nbChoices));
 
         buttons.ForEach(x => x.onClick.RemoveAllListeners());
     }
@@ -47,23 +47,18 @@ public class DialogUIManager : MonoBehaviour
         panelQuestion.SetActive(true);
         panelDialog.SetActive(false);
 
-        buttons.ForEach(x => x.gameObject.SetActive(true));
+        buttons.ForEach(x => x.gameObject.SetActive(false));
 
-        for (int i = buttons.Count - 1; i >= 0; i--)
+        int startingIndex = buttons.Count - choices.Length;
+
+        for (int i = startingIndex; i < buttons.Count; i++)
         {
             Button button = buttons[i];
 
-            if (i < choices.Length)
-            {
-                button.gameObject.SetActive(true);
-                TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
-                text.text = choices[i];
-                button.onClick.AddListener(delegate { OnButtonClick(button); });
-            }
-            else
-            {
-                button.gameObject.SetActive(false);
-            }
+            button.gameObject.SetActive(true);
+            TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
+            text.text = choices[i - startingIndex];
+            button.onClick.AddListener(delegate { OnButtonClick(button, choices.Length); });
         }
     }
 
