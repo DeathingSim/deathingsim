@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     public GameEvent endDialogGameEvent;
-    public StringGameEvent showDialogGameEvent;
+    public DialogGameEvent showDialogGameEvent;
     public StringArrayGameEvent showQuestionGameEvent;
     
     public TextAsset textAsset;
@@ -18,12 +18,6 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
-        Starte();
-    }
-
-    private void Starte()
-    {
-
         story = new Story(textAsset.text);
         ShowNextMessage();
     }
@@ -32,7 +26,13 @@ public class DialogueManager : MonoBehaviour
     {
         if (story.canContinue)
         {
-            ShowMessage(story.Continue());
+            string message = story.Continue();
+            Dialog dialog = new Dialog()
+            {
+                message = message,
+                characterName = "DEATH"
+            };
+            ShowMessage(dialog);
             waitingForAnswer = false;
         }
         else if (story.currentChoices.Count > 0)
@@ -44,9 +44,9 @@ public class DialogueManager : MonoBehaviour
             endDialogGameEvent.Raise();
     }
 
-    public void ShowMessage(string message)
+    public void ShowMessage(Dialog dialog)
     {
-        showDialogGameEvent.Raise(message);
+        showDialogGameEvent.Raise(dialog);
     }
 
     public void ShowQuestion(string[] choices)

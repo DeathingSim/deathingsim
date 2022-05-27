@@ -15,9 +15,13 @@ public class DialogUIManager : MonoBehaviour
     public GameObject buttonPrefab;
     private List<Button> buttons;
     public float buttonOffset;
+    private TypeWriterEffect typeWriterEffect;
+    public GameObject confirmDialogImage;
+    private bool writingMessage;
 
     public void Awake()
     {
+        typeWriterEffect = GetComponent<TypeWriterEffect>();
         buttons = panelQuestion.GetComponentsInChildren<Button>().ToList();
     }
 
@@ -40,9 +44,6 @@ public class DialogUIManager : MonoBehaviour
         panelQuestion.SetActive(true);
         panelDialog.SetActive(false);
 
-        RectTransform r = panelQuestion.GetComponent<RectTransform>();
-        RectTransform br = buttonPrefab.GetComponent<RectTransform>();
-
         buttons.ForEach(x => x.gameObject.SetActive(true));
 
         for (int i = buttons.Count - 1; i >= 0; i--)
@@ -63,10 +64,37 @@ public class DialogUIManager : MonoBehaviour
         }
     }
 
-    public void ShowMessage(string message)
+    public void ShowDialog(Dialog dialog)
     {
         panelQuestion.SetActive(false);
         panelDialog.SetActive(true);
-        dialogBox.text = message;
+
+        characterName.text = dialog.characterName;
+
+        if (typeWriterEffect != null)
+        {
+            typeWriterEffect.RunEffect(dialog.message, dialogBox, MessageShown);
+        }
+        else
+        {
+            dialogBox.text = dialog.message;
+            MessageShown();
+        }
+    }
+
+    public void MessageShown()
+    {
+        writingMessage = false;
+        if (confirmDialogImage != null)
+            confirmDialogImage.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && !writingMessage)
+        {
+            if (confirmDialogImage != null)
+                confirmDialogImage.SetActive(false);
+        }
     }
 }
