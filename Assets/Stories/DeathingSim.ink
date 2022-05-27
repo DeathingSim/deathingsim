@@ -1,5 +1,6 @@
 # theme: dark
 # author: Hadrien Debris
+VAR CNAME = ""
 
 -> DEATH
 
@@ -13,8 +14,11 @@ You keep blinking as the landscape before you does not seem to stop changing.
 
 A tall figure stands beside you seemingly oblivious to the large fire a few feet away.
 
+~CNAME = "DEATH"
+
 "ARE YOU OK?"
     * [Nod]
+        ~CNAME = ""
         You acknowledge faintly.
     * "Probably..."
         The silhouette gives you time to gather your thoughts.

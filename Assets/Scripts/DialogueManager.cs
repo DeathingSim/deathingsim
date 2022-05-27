@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    const string CharacterNameVariable = "CNAME";
+
     public GameEvent endDialogGameEvent;
     public DialogGameEvent showDialogGameEvent;
     public StringArrayGameEvent showQuestionGameEvent;
@@ -27,10 +29,12 @@ public class DialogueManager : MonoBehaviour
         if (story.canContinue)
         {
             string message = story.Continue();
+            string characterName = story.variablesState.GlobalVariableExistsWithName(CharacterNameVariable) ? (string)story.variablesState[CharacterNameVariable] : string.Empty;
+
             Dialog dialog = new Dialog()
             {
                 message = message,
-                characterName = "DEATH"
+                characterName = characterName
             };
             ShowMessage(dialog);
             waitingForAnswer = true;
