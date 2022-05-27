@@ -18,6 +18,7 @@ public class DialogUIManager : MonoBehaviour
     private TypeWriterEffect typeWriterEffect;
     public GameObject confirmDialogImage;
     private bool writingMessage;
+    private bool isQuestion;
 
     public void Awake()
     {
@@ -41,6 +42,8 @@ public class DialogUIManager : MonoBehaviour
 
     public void ShowQuestion(string[] choices)
     {
+        isQuestion = true;
+
         panelQuestion.SetActive(true);
         panelDialog.SetActive(false);
 
@@ -66,6 +69,9 @@ public class DialogUIManager : MonoBehaviour
 
     public void ShowDialog(Dialog dialog)
     {
+        isQuestion = false;
+        writingMessage = true;
+
         panelQuestion.SetActive(false);
         panelDialog.SetActive(true);
 
@@ -91,10 +97,18 @@ public class DialogUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !writingMessage)
+        if (Input.GetMouseButtonDown(0) && !isQuestion)
         {
-            if (confirmDialogImage != null)
-                confirmDialogImage.SetActive(false);
+            if (!writingMessage)
+            {
+                choiceGameEvent.Raise(-1);
+                if (confirmDialogImage != null)
+                    confirmDialogImage.SetActive(false);
+            }
+            else
+            {
+                typeWriterEffect?.FastEffect(MessageShown);
+            }
         }
     }
 }

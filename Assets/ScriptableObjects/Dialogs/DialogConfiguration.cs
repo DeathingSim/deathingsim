@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Dialog/Configuration")]
 public class DialogConfiguration : ScriptableObject
 {
-    public float typeWriterEffectSpeed = 0.1f;
+    public float typeWriterEffectSpeed;
+    public float typeWriterEffectFastSpeed;
 }

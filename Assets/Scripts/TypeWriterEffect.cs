@@ -6,38 +6,52 @@ using UnityEngine;
 
 public class TypeWriterEffect : MonoBehaviour
 {
+    Coroutine coroutine;
     public DialogConfiguration dialogConfiguration;
-    public bool IsRunning { get; private set; }
+    private string writingText;
+    private TextMeshProUGUI writingTextBox;
 
     public void RunEffect(string text, TextMeshProUGUI textBox, Action callback)
     {
-        IsRunning = true;
-        StartCoroutine(TypeText(text, textBox, callback));
+        writingText = text;
+        writingTextBox = textBox;
+
+        coroutine = StartCoroutine(TypeText(dialogConfiguration.typeWriterEffectSpeed, callback));
     }
 
-    private IEnumerator TypeText(string text, TextMeshProUGUI textBox, Action callback)
+    private IEnumerator TypeText(float speed, Action callback)
     {
         float t = 0;
         int charIndex = 0;
 
-        while(charIndex < text.Length && IsRunning)
+        while(charIndex < writingText.Length)
         {
             t += Time.deltaTime;
-            charIndex = Mathf.FloorToInt(t / dialogConfiguration.typeWriterEffectSpeed);
-            charIndex = Mathf.Clamp(charIndex, 0, text.Length);
 
-            textBox.text = text.Substring(0, charIndex);
+            if (t >= speed)
+            {
+                int c = Mathf.FloorToInt(t / speed);
+                charIndex += c;
+                t -= speed * c;
+            }
+
+            charIndex = Mathf.Clamp(charIndex, 0, writingText.Length);
+
+            writingTextBox.text = writingText.Substring(0, charIndex);
 
             yield return null;
         }
 
-        textBox.text = text;
+        writingTextBox.text = writingText;
 
         callback?.Invoke();
     }
 
-    public void SkipEffect(string text, TextMeshProUGUI textBox)
+    public void FastEffect(Action callback)
     {
-        IsRunning = false;
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+
+        StartCoroutine(TypeText(dialogConfiguration.typeWriterEffectFastSpeed, callback));
     }
 }

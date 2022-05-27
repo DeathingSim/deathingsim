@@ -33,7 +33,7 @@ public class DialogueManager : MonoBehaviour
                 characterName = "DEATH"
             };
             ShowMessage(dialog);
-            waitingForAnswer = false;
+            waitingForAnswer = true;
         }
         else if (story.currentChoices.Count > 0)
         {
@@ -56,7 +56,9 @@ public class DialogueManager : MonoBehaviour
 
     public void QuestionAnswered(int choice)
     {
-        story.ChooseChoiceIndex(choice);
+        if (choice >= 0)
+            story.ChooseChoiceIndex(choice);
+
         ShowNextMessage();
     }
 
