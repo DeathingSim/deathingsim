@@ -9,11 +9,13 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    const string CharacterNameVariable = "CNAME";
-
     public GameEvent endDialogGameEvent;
     public DialogGameEvent showDialogGameEvent;
     public StringArrayGameEvent showQuestionGameEvent;
+    public BooleanGameEvent showFeelingsBarGameEvent;
+    public AudioGameEvent playSoundGameEvent;
+    public AudioClip[] sounds;
+    public GameState gameState;
     
     public TextAsset textAsset;
     private Story story;
@@ -25,10 +27,32 @@ public class DialogueManager : MonoBehaviour
         List<string> hps = new List<string>() { "HP1", "HP2", "HP3", "HP4", "HP5" };
         story.ObserveVariables(hps.ToList(), (variableName, newValue) =>
         {
-
-
+            switch (variableName)
+            {
+                case "HP1": gameState.SetFeelings(0, (int)newValue); break;
+                case "HP2": gameState.SetFeelings(1, (int)newValue); break;
+                case "HP3": gameState.SetFeelings(2, (int)newValue); break;
+                case "HP4": gameState.SetFeelings(3, (int)newValue); break;
+                case "HP5": gameState.SetFeelings(4, (int)newValue); break;
+            }
         });
+
+        story.BindExternalFunction<bool>(nameof(ShowFeelingsBar), ShowFeelingsBar);
+        story.BindExternalFunction<string>(nameof(PlaySound), PlaySound);
+
         ShowNextMessage();
+    }
+
+    private void ShowFeelingsBar(bool displayed)
+    {
+        showFeelingsBarGameEvent?.Raise(displayed);
+    }
+
+    private void PlaySound(string sound)
+    {
+        AudioClip clip = sounds.FirstOrDefault(x => x.name == sound);
+        if (clip != null)
+            playSoundGameEvent?.Raise(new Audio() { audio = clip });
     }
 
     public void ShowNextMessage()

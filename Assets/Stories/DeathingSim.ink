@@ -5,11 +5,14 @@ VAR HP2 = 0
 VAR HP3 = 0
 VAR HP4 = 0
 VAR HP5 = 0
-VAR CNAME = ""
+EXTERNAL ShowFeelingsBar(displayed)
+EXTERNAL PlaySound(sound)
 
 -> DEATH
 
 === DEATH ===
+
+ #~ ShowFeelingsBar(true)
 
 This morning, opening your eyes seems easier than usual, as if your eyelids were lighter. However, your head feels fuzzy. You probably overslept, needing some time to recollect your spirits but at least you are feeling refreshed. 
 
@@ -19,11 +22,9 @@ You keep blinking as the landscape before you does not seem to stop changing.
 
 A tall figure stands beside you seemingly oblivious to the large fire a few feet away.
 
-~CNAME = "DEATH"
-
+ ~ PlaySound("hmm")
 DEATH: "ARE YOU OK?"
     * [Nod]
-        ~CNAME = ""
         You acknowledge faintly.
     * "Probably..."
         The silhouette gives you time to gather your thoughts.
@@ -34,7 +35,7 @@ DEATH: "ARE YOU OK?"
 Staring at the fire, you begin to remember a few things.  -> memory
 
 === memory ===
-    *   (fire) "There was a fire."
+    *    (fire) { not object && not children } "There was a fire."
         // I THINK I CAN SEE WHERE \*THAT'S\* COMING FROM.
         DEATH: THAT'S ON ME. STARTING SLOW. AT LEAST I CAN SEE THAT YOU'RE DEMONSTRATING BASIC VISUAL ACUITY. 
         -> memory
@@ -51,12 +52,15 @@ Staring at the fire, you begin to remember a few things.  -> memory
     *   (object) "There was something falling from the sky!"
         DEATH: "WHAT WAS IT?"
             * * (meteorite) "A giant ball of fire."
+                ~ HP1 = HP1 + 10
                 DEATH: CLOSE ENOUGH. 
                 -> memory
             * * (moon) "The Moon!"
+                ~ HP1 = HP1 + 10
                 DEATH: AREN'T YOU A BIT OVER DRAMATIC? 
                 -> memory
             * * (helicopter) "It looked like... People screaming?"
+                ~ HP1 = HP1 + 20
                 DEATH: INDEED. 
                 -> memory
     * { children } { object } ->
@@ -114,7 +118,9 @@ DEATH: "A CAT? I LIKE CATS. WHAT IS IT CALLED?"
 
 *   (bland) The Cat.
 *   (addiction) Nicotine.
-*   (cute) Meow.
+        ~HP1 = HP1 + 10
+*   (cute) Meow. 
+        ~HP1 = HP1 + 20
 -
 {
     - bland:
@@ -125,12 +131,34 @@ DEATH: "A CAT? I LIKE CATS. WHAT IS IT CALLED?"
         DEATH: "UNUSUAL, BUT CUTE."
 }
 
+"So, what's next then?"
+
+DEATH: "USUALLY, MY 'CLIENTS' HAVE SOMETHING OF AN EXISTENTIAL CRISIS. I TAKE SOME TIME TO LET THEM THROW A LITTLE TANTRUM AND REASSURE THEM THAT THE WORLD CAN AND WILL CONTINUE WITHOUT THEM. SO WE'RE A BIT AHEAD OF SCHEDULE, YOUR BOAT SHOULD ARRIVE SOON."
+
+"I take it you're Death then."
+
+"ANOTHER FINE OBSERVATION. WHAT TIPPED YOU OFF?" said the otherworldy character slowly turning to face you.
+
+* (scythe) Your scythe, it's SO sharp and shiny! 
+    ~HP1 = HP1 + 10
+* (eyes) Your eyes, they're SO deep! 
+    ~HP1 = HP1 + 20
+* (cross) The cross on your cape, even if it's a bit on the nose.
+- DEATH: "ERM, THANKS, I THINK."
+
+{ HP1 < 60: -> boat_arrives }
+
+DEATH: "ACTUALLY, WOULD YOU SPARE A FEW MOMENTS TO HELP ME VENT ABOUT MY DAY?"
 
 -> END
 
-The character helps you abord the embarcation.
+=== boat_arrives ===
+DEATH: "IT LOOKS LIKE YOUR TIME HAS COME. HAVE A NICE AFTERLIFE, I GUESS..."
 
-DEATH: "WELL ACTUALLY, MY NAME IS DEATH... BUT YOU PROBABLY FIGURED THAT OUT ALREADY. 
-WOULD YOU SPARE A FEW MOMENTS TO HELP ME VENT ABOUT MY DAY?"
+Death extends a bonely hand and helps you abord a boat floating on what seems to be a gravity-defying river.
+
+The boat starts taking speed and it all begins to fade...
+
+TO WHITE.
 
 -> END
