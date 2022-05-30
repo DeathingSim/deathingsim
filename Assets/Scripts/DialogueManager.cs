@@ -14,8 +14,12 @@ public class DialogueManager : MonoBehaviour
     public StringArrayGameEvent showQuestionGameEvent;
     public BooleanGameEvent showFeelingsBarGameEvent;
     public AudioGameEvent playSoundGameEvent;
+    public AudioGameEvent playMusicGameEvent;
+    public GameEvent stopMusicGameEvent;
     public AudioClip[] sounds;
+    public AudioClip[] musics;
     public GameState gameState;
+    public StringGameEvent deathAnimationGameEvent;
     
     public TextAsset textAsset;
     private Story story;
@@ -39,6 +43,9 @@ public class DialogueManager : MonoBehaviour
 
         story.BindExternalFunction<bool>(nameof(ShowFeelingsBar), ShowFeelingsBar);
         story.BindExternalFunction<string>(nameof(PlaySound), PlaySound);
+        story.BindExternalFunction<string>(nameof(PlayMusic), PlayMusic);
+        story.BindExternalFunction(nameof(StopMusic), StopMusic);
+        story.BindExternalFunction<string, string>(nameof(PlayAnimation), PlayAnimation);
 
         ShowNextMessage();
     }
@@ -53,6 +60,28 @@ public class DialogueManager : MonoBehaviour
         AudioClip clip = sounds.FirstOrDefault(x => x.name == sound);
         if (clip != null)
             playSoundGameEvent?.Raise(new Audio() { audio = clip });
+    }
+
+    private void PlayMusic(string music)
+    {
+        AudioClip clip = musics.FirstOrDefault(x => x.name == music);
+        if (clip != null)
+            playMusicGameEvent?.Raise(new Audio() { audio = clip });
+    }
+
+    private void StopMusic()
+    {
+        stopMusicGameEvent?.Raise();
+    }
+
+    private void PlayAnimation(string animator, string animationName)
+    {
+        switch (animator)
+        {
+            case "DEATH":
+                deathAnimationGameEvent?.Raise(animationName);
+                break;
+        }
     }
 
     public void ShowNextMessage()
@@ -89,12 +118,12 @@ public class DialogueManager : MonoBehaviour
 
     public void ShowMessage(Dialog dialog)
     {
-        showDialogGameEvent.Raise(dialog);
+        showDialogGameEvent?.Raise(dialog);
     }
 
     public void ShowQuestion(string[] choices)
     {
-        showQuestionGameEvent.Raise(choices);
+        showQuestionGameEvent?.Raise(choices);
     }
 
     public void QuestionAnswered(int choice)

@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource audioSource;
-
-    private void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
+    public AudioSource soundSource;
+    public AudioSource musicSource;
 
     public void PlaySound(Audio audio)
     {
-        if (audioSource != null)
+        if (soundSource != null)
         {
-            audioSource.PlayOneShot(audio.audio);
+            soundSource.PlayOneShot(audio.audio);
         }
+    }
+
+    public void PlayMusic(Audio audio)
+    {
+        if (musicSource != null)
+        {
+            musicSource.clip  = audio.audio;
+            musicSource.Play();
+        }
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
     }
 }
