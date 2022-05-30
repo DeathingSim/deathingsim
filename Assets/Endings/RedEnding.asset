@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdcbfa43e8ab03744bb816402284d1bd, type: 3}
-  m_Name: Ending
+  m_Name: RedEnding
   m_EditorClassIdentifier: 
-  name: MyEnding
   color: {r: 0.7075472, g: 0.02984433, b: 0, a: 0.6509804}
-  endingText: THIS IS THE END
+  endingText: END OF THE LINE

@@ -1110,6 +1110,8 @@ MonoBehaviour:
   deathAnimationGameEvent: {fileID: 11400000, guid: 33c79fbbec629a548a058836bbc29951, type: 2}
   endings:
   - {fileID: 11400000, guid: cb70d2f105efd204dbbd47c69af525d2, type: 2}
+  - {fileID: 11400000, guid: 701fa3785b7eef24180f01b0c7f7c71e, type: 2}
+  - {fileID: 11400000, guid: 56ea8124221870d46afadb9655f650a6, type: 2}
   textAsset: {fileID: 4900000, guid: 5bde57f35fcb7ad4bae2873167c6d1d4, type: 3}
 --- !u!4 &831793300
 Transform:
@@ -3466,8 +3468,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
