@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
@@ -16,10 +17,12 @@ public class DialogueManager : MonoBehaviour
     public AudioGameEvent playSoundGameEvent;
     public AudioGameEvent playMusicGameEvent;
     public GameEvent stopMusicGameEvent;
+    public EndGameEvent endGameEvent;
     public AudioClip[] sounds;
     public AudioClip[] musics;
     public GameState gameState;
     public StringGameEvent deathAnimationGameEvent;
+    public Ending[] endings;
     
     public TextAsset textAsset;
     private Story story;
@@ -46,8 +49,19 @@ public class DialogueManager : MonoBehaviour
         story.BindExternalFunction<string>(nameof(PlayMusic), PlayMusic);
         story.BindExternalFunction(nameof(StopMusic), StopMusic);
         story.BindExternalFunction<string, string>(nameof(PlayAnimation), PlayAnimation);
+        story.BindExternalFunction<string>(nameof(EndGame), EndGame);
 
         ShowNextMessage();
+    }
+
+    private void EndGame(string endingName)
+    {
+        gameState.Ended = true;
+        endDialogGameEvent?.Raise();
+
+        Ending ending = endings.FirstOrDefault(x => x.name == endingName);
+        if (ending != null)
+            endGameEvent?.Raise(ending);
     }
 
     private void ShowFeelingsBar(bool displayed)
@@ -89,23 +103,26 @@ public class DialogueManager : MonoBehaviour
         if (story.canContinue)
         {
             string message = story.Continue();
-            string characterName = string.Empty;
-            Regex regex = new Regex(@"(^\S+):(.+)");
-            Match match = regex.Match(message);
-
-            if (match.Success)
+            if (!gameState.Ended)
             {
-                characterName = match.Groups[1].Value;
-                message = match.Groups[2].Value;
+                string characterName = string.Empty;
+                Regex regex = new Regex(@"(^\S+):(.+)");
+                Match match = regex.Match(message);
+
+                if (match.Success)
+                {
+                    characterName = match.Groups[1].Value;
+                    message = match.Groups[2].Value;
+                }
+
+                Dialog dialog = new Dialog()
+                {
+                    message = message,
+                    characterName = characterName
+                };
+                ShowMessage(dialog);
+                waitingForAnswer = true;
             }
-
-            Dialog dialog = new Dialog()
-            {
-                message = message,
-                characterName = characterName
-            };
-            ShowMessage(dialog);
-            waitingForAnswer = true;
         }
         else if (story.currentChoices.Count > 0)
         {
@@ -132,6 +149,14 @@ public class DialogueManager : MonoBehaviour
             story.ChooseChoiceIndex(choice);
 
         ShowNextMessage();
+    }
+
+    public void PlayAgain()
+    {
+        gameState.Ended = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        //story.ResetState();
+        //ShowNextMessage();
     }
 
     private void Update()

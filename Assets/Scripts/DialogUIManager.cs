@@ -36,6 +36,8 @@ public class DialogUIManager : MonoBehaviour
 
     public void HideMessage()
     {
+        panelQuestion.SetActive(false);
+        panelDialog.SetActive(false);
         characterName.text = string.Empty;
         dialogBox.text = string.Empty;
     }

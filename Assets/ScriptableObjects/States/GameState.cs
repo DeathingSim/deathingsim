@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameState", menuName = "States/Game State")]
 public class GameState : ScriptableObject
 {
+    public bool Ended;
+
     public FeelingsGameEvent feelingsGameEvent;
 
     public int[] MinFeelings;
@@ -14,6 +16,7 @@ public class GameState : ScriptableObject
 
     private void OnEnable()
     {
+        Ended = false;
         Feelings = new int[MinFeelings.Length];
         MinFeelings.CopyTo(Feelings, 0);
     }

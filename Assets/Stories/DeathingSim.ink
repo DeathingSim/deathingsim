@@ -10,18 +10,22 @@ EXTERNAL PlaySound(sound)
 EXTERNAL PlayMusic(music)
 EXTERNAL StopMusic()
 EXTERNAL PlayAnimation(animator, animationName)
+EXTERNAL EndGame(endName)
 -> DEATH
 
 === DEATH ===
 
  ~ PlayMusic("bgm")
- #~ ShowFeelingsBar(true)
+ ~ ShowFeelingsBar(true)
 
 This morning, opening your eyes seems easier than usual, as if your eyelids were lighter. However, your head feels fuzzy. You probably overslept, needing some time to recollect your spirits but at least you are feeling refreshed. 
 
 You rapidly understand that you are not home anymore.
 
 You keep blinking as the landscape before you does not seem to stop changing.
+
+#   ~ EndGame("Ending")
+# -> END
 
 A tall figure stands beside you seemingly oblivious to the large fire a few feet away.
  ~ PlayAnimation("DEATH", "Idle")
