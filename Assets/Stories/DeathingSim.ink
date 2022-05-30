@@ -46,9 +46,11 @@ Staring at the fire, you begin to remember a few things.  -> memory
     *   (children) "There were... children?"
         DEATH: WHAT ABOUT THEM?
             * * "Are they safe?" 
+                ~HP1 = HP1 + 20
                 DEATH: WELL, THEY ARE NOW. 
                 -> memory
             * * "They were in danger." 
+                ~HP1 = HP1 + 20
                 DEATH: NOT ANYMORE. 
                 -> memory
             * * "I hurt them." 
@@ -141,7 +143,7 @@ DEATH: "USUALLY, MY 'CLIENTS' HAVE SOMETHING OF AN EXISTENTIAL CRISIS. I TAKE SO
 
 "I take it you're Death then."
 
-"ANOTHER FINE OBSERVATION. WHAT TIPPED YOU OFF?" said the otherworldy character slowly turning to face you.
+DEATH: "ANOTHER FINE OBSERVATION. WHAT TIPPED YOU OFF?" said the otherworldy character slowly turning to face you.
 
 * (scythe) Your scythe, it's SO sharp and shiny! 
     ~HP1 = HP1 + 10
@@ -152,7 +154,73 @@ DEATH: "USUALLY, MY 'CLIENTS' HAVE SOMETHING OF AN EXISTENTIAL CRISIS. I TAKE SO
 
 { HP1 < 60: -> boat_arrives }
 
-DEATH: "ACTUALLY, WOULD YOU SPARE A FEW MOMENTS TO HELP ME VENT ABOUT MY DAY?"
+DEATH: "ACTUALLY, I COULD USE SOME COMPANY. CARE TO JOIN ME FOR A RIDE?"
+
+* (inquisitor) "Ride? What kind of a ride?"
+* (resolved) "Why not? Eternity can keep waiting."
+* (enthusiastic) "Hell yes! Er, pardon my blasphemy."
+- Death snaps two fingers and a loud roar followed by four spinning discs of fire appear out of thin air and stop right at your feet. This car, as you should probably call it, looks like it's made of breathing lava and metal. As it cools down, you begin to distinguish chrome and the hot rod carcass it forms. Fire keeps bursting from its numerous exhaust pipes.
+
+DEATH: "FIRST STOP, OUR NEXT CLIENT."
+
+In what can only be described as the mother of all 'pedals to the metal' (quite litterally in this case), the car takes so much speed that you quickly break the sound barrier soon followed by the visual barrier, transforming the landscape into a kaleidoscope of colours.
+
+Another instant and you feel like your eyes wanting to pop out as Death hits the brakes. You're in a city, but it does not look like your home country. There is no one around and all objects seem to be glued in time and space.
+
+Death heads towards a small silhouette lying on the floor.
+
+DEATH: "THIS LITTLE GIRL HERE DIED FROM SEVERE ASTHMA. SHE WAS RUNNING, TRYING TO ESCAPE THE MERCHANTS FROM WHOM SHE STOLE SOME FOOD. WORST, IT WAS NOT EVEN FOR HER. SHE WAS RUSHING TO THE MAKESHIFT ORPHANAGE TO GIVE IT TO THE BAND SHE FELT SHE WAS IN CHARGE OF. WHAT WOULD YOU DO IN MY PLACE?"
+
+The little girl gets up, looks around her and starts crying: "What are they going to do?"
+
+DEATH: "WHAT WOULD YOU DO?" as they start walking towards the child.
+
+You take some time to think:
+* "Can you give her back her life? Poor thing hardly even toddled."
+    ~HP2 = HP2 + 30
+    "ON RARE OCCASIONS, I MIGHT OVERSTEP A LITTLE. BUT WHAT GOOD COULD IT BRING HER IF SHE GOES BACK?"
+    You see Death whispering something in her ears and taking her up in their arms. They put the little girl on a boat floating on a gravity-defying river and wave as the boat takes her away.
+    "What did you say to her?"
+    "I TOLD HER THEY WOULD EVENTUALLY BE SAFE."
+    "Will they though?"
+    "I DON'T KNOW BUT EVERYONE IS SAFE EVENTUALLY."
+* "Well, I can only hope her afterlife will be better than this one."
+    "I REALLY HOPE SO." You see Death whispering something in her ears and taking her up in their arms. They put the little girl on a boat floating on a gravity-defying river and wave as the boat takes her away.
+    "What did you say to her?"
+    "I TOLD HER THEY WOULD EVENTUALLY BE SAFE."
+    "Will they though?"
+    "I DON'T KNOW BUT EVERYONE IS SAFE EVENTUALLY."
+* [You run past Death and take the little girl in your arms.]
+    Death watches as you run and take the little girl in your arms.
+    ~HP2 = HP2 + 50
+    DEATH: "WELL, ME NEITHER" as they watch you trying to comfort her.
+    "Everything will be okay." You tell the little girl, your eyes begging Death to confirm. "INDEED, EVERYTHING WILL BE Okay." Death's voice seems muffled as they take her up in their arms. They put the little girl on a boat floating on a gravity-defying river and wave as the boat takes her away.
+    
+- DEATH: "ENOUGH NOW, OR WE MIGHT BE LATE." And they snap their fingers again. The car had vanished and does not seem to come back. You look to them as they extend a bonely finger towards the sky. A pegasus made of ice lands in a tornado of snowflakes. You leave the scene in a flash.
+
+You land softly on a skyscraper, on the last floor. A penthouse, ending up in a swimming pool made of glass over the rooftops. At second glance, you noticed how much it is broken and how its lone swimmer is hanging over the edge.
+
+DEATH: "THE PERSON YOU SEE HERE HAS JUMPED STATES TO AVOID EVERY POSSIBLE CONVICTION. HE HAS MURDERED PEOPLE, SOLD DRUGS AND WORSE... AND FINALLY, FATE SEEMS TO HAVE CAUGHT BACK TO HIM. WHAT WOULD YOU DO?"
+* "Earth will probably be better without him."
+    ~HP2 = HP2 + 30
+    You watch as the fingers give up one after the other. As the silhouette shrinks in the distance a huge red hole opens and swallows it.
+    DEATH: "PROBABLY."
+* [You come closer and lend a hand]
+    You catch the hanging man and helps him back on the roof. He fades rapidly.
+    DEATH: "HE WILL CONTINUE HIS EVIL DEEDS."
+    "Or not, you never know."
+    ~HP2 = HP2 + 50
+* [You come closer and stomps your foot on his fingers.]
+    The man falls. As the silhouette shrinks in the distance a huge red hole opens and swallows it.
+    DEATH: "THAT WAS NOT NECESSARY."
+    "He deserved it."
+    DEATH: "IT SEEMS SO, BUT HE WOULD HAVE FALLEN EVENTUALLY."
+
+{ HP2 < 60: -> boat_arrives }
+
+- "WE MIGHT HAVE SOME TIME LEFT. WOULD YOU CARE TO JOIN ME FOR LUNCH?"
+
+TO BE CONTINUED...
 
 -> END
 
